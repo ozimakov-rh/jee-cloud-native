@@ -1,5 +1,8 @@
 package com.redhat.demo.kudos.rest;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class ErrorResponse {
 
     private String errorUuid;
