@@ -14,7 +14,7 @@ import java.util.List;
 @Path("/api/kudos")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Authenticated
+@Authenticated // TODO add admin role features
 public class KudosResource {
 
     @Inject

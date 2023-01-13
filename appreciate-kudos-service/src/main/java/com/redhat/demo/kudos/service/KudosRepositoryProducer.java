@@ -1,14 +1,10 @@
 package com.redhat.demo.kudos.service;
 
-import io.quarkus.arc.DefaultBean;
-import io.quarkus.arc.Priority;
-import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 

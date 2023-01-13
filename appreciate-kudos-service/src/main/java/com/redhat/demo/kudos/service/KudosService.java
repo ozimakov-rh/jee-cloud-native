@@ -38,14 +38,12 @@ public class KudosService {
         return kudos;
     }
 
-    @Transactional
     public List<Kudos> listKudos(String user) {
         return kudosRepository.stream()
                 .filter(kudos -> kudos.getUserTo().equalsIgnoreCase(user) || kudos.getUserFrom().equalsIgnoreCase(user))
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public List<Kudos> listAllKudos() {
         return kudosRepository.list();
     }
