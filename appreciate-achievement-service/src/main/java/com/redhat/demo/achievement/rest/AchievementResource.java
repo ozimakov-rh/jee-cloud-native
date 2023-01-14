@@ -5,6 +5,7 @@ import com.redhat.demo.achievement.service.AchievementService;
 import io.quarkus.security.Authenticated;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -13,7 +14,7 @@ import java.util.List;
 @Path("/api/achievement")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Authenticated // TODO add admin role features
+@Authenticated
 public class AchievementResource {
 
     @Inject
@@ -22,10 +23,13 @@ public class AchievementResource {
     @Inject
     JsonWebToken accessToken;
 
+    private String _username() {
+        return accessToken.getClaim("preferred_username").toString();
+    }
+
     @GET
     public List<Achievement> fetchAchievement() {
-        var user = accessToken.getClaim("preferred_username").toString();
-        return achievementService.listAchievements(user);
+        return achievementService.listAchievements(_username());
     }
 
     @Path("/{id}")
@@ -34,27 +38,6 @@ public class AchievementResource {
                 .filter(achievement -> achievement.getId().equals(id))
                 .findAny();
         return achievementFound.orElseThrow(() -> new NotFoundException("Achievement record with id='" + id + "' was not found"));
-    }
-
-    @POST
-    public Achievement postAchievement(Achievement achievement) {
-        // Validation
-        if (achievement.getOwner() == null || achievement.getType() == null) {
-            throw new BadRequestException("Both owner and type must be provided");
-        }
-        return achievementService.grantAchievement(achievement.getOwner(), achievement.getType());
-    }
-
-    @PUT
-    public List<Achievement> refreshAchievements(@QueryParam("user") String user) {
-        return achievementService.refreshAchievements(user);
-    }
-
-    @DELETE
-    @Path("/{id}")
-    public void deleteAchievement(@PathParam("id") Long id) {
-        fetchAchievementById(id);
-        achievementService.deleteAchievement(id);
     }
 
 }

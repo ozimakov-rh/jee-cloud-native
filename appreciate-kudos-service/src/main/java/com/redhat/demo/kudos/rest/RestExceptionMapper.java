@@ -24,6 +24,9 @@ public class RestExceptionMapper implements ExceptionMapper<Exception> {
             case "NotFoundException":
                 status = Response.Status.NOT_FOUND;
                 break;
+            case "NotSupportedException":
+                status = Response.Status.NOT_IMPLEMENTED;
+                break;
             case "BadRequestException":
                 status = Response.Status.BAD_REQUEST;
                 break;
