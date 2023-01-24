@@ -34,3 +34,7 @@ Or, as a native build
 ```
 oc new-app quay.io/quarkus/ubi-quarkus-native-s2i:22.2-java17~https://github.com/ozimakov-rh/jee-cloud-native --context-dir=appreciate-kudos-service --name=appreciate-kudos-service
 ```
+
+# Connecting to Kafka
+[Connection to AMQ Streams cluster](https://access.redhat.com/documentation/en-us/red_hat_amq_streams/2.3/html/getting_started_with_amq_streams_on_openshift/proc-creating-route-str)
+

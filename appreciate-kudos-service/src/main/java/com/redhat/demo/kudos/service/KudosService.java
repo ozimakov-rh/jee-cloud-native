@@ -1,6 +1,7 @@
 package com.redhat.demo.kudos.service;
 
 import com.redhat.demo.kudos.entity.Kudos;
+import com.redhat.demo.kudos.event.KudosCreatedEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,11 +19,17 @@ public class KudosService {
     @Named("producedRepo")
     KudosRepository kudosRepository;
 
-//    @Inject
-//    private Event<KudosCreatedEvent> event;
+    @Inject
+    EventService eventService;
+
+    public Kudos createKudos(String userFrom, String userTo, String description) {
+        var kudos = createKudosInDatabase(userFrom, userTo, description);
+        eventService.publishKudosCreatedEvent(kudos);
+        return kudos;
+    }
 
     @Transactional
-    public Kudos createKudos(String userFrom, String userTo, String description) {
+    Kudos createKudosInDatabase(String userFrom, String userTo, String description) {
         Kudos kudos = Kudos.builder()
                 .id(Math.abs((new Random()).nextLong()))
                 .userFrom(userFrom)
@@ -31,10 +38,6 @@ public class KudosService {
                 .creationDate(new Date())
                 .build();
         kudosRepository.add(kudos);
-
-        // TODO publish event
-        //event.fire(new KudosCreatedEvent(kudos));
-
         return kudos;
     }
 
