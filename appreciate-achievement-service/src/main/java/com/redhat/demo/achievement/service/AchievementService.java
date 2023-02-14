@@ -1,6 +1,8 @@
 package com.redhat.demo.achievement.service;
 
 import com.redhat.demo.achievement.entity.Achievement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class AchievementService {
 
+    private final static Logger log = LoggerFactory.getLogger(AchievementService.class);
+
     @Inject
     AchievementRepository achievementRepository;
 
@@ -25,6 +29,7 @@ public class AchievementService {
 
     @Transactional
     public List<Achievement> refreshAchievements(String user) {
+        log.debug("Refreshing achievements for user {}", user);
         /*List<Kudos> kudosList = kudosService.listKudos(user);
 
         List<Kudos> ownKudos = kudosList.stream()

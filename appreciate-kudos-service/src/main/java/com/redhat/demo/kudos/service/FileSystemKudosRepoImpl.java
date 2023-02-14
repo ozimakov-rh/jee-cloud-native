@@ -2,7 +2,7 @@ package com.redhat.demo.kudos.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.redhat.demo.kudos.entity.Kudos;
+import com.redhat.demo.common.Kudos;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.File;

@@ -1,7 +1,6 @@
 package com.redhat.demo.kudos.service;
 
-import com.redhat.demo.kudos.entity.Kudos;
-import com.redhat.demo.kudos.event.KudosCreatedEvent;
+import com.redhat.demo.common.Kudos;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

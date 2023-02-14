@@ -1,9 +1,7 @@
 package com.redhat.demo.kudos.rest;
 
-import com.redhat.demo.kudos.entity.Kudos;
+import com.redhat.demo.common.Kudos;
 import com.redhat.demo.kudos.service.KudosService;
-import io.quarkus.security.Authenticated;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;

@@ -1,6 +1,6 @@
 package com.redhat.demo.kudos.service;
 
-import com.redhat.demo.kudos.entity.Kudos;
+import com.redhat.demo.common.Kudos;
 
 import java.util.List;
 import java.util.stream.Stream;

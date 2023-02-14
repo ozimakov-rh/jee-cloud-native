@@ -1,4 +1,4 @@
-package com.redhat.demo.kudos.entity;
+package com.redhat.demo.common;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
