@@ -19,8 +19,12 @@ public class KudosAdminResource {
     KudosService kudosService;
 
     @GET
-    public List<Kudos> fetchKudos() {
-        return kudosService.listAllKudos();
+    public List<Kudos> fetchKudos(@QueryParam("user") String user) {
+        return user != null ? kudosService.listKudos(user) : kudosService.listAllKudos();
+    }
+
+    protected List<Kudos> fetchKudos() {
+        return fetchKudos(null);
     }
 
     @POST

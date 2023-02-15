@@ -1,6 +1,8 @@
 package com.redhat.demo.achievement.service;
 
 import com.redhat.demo.achievement.entity.Achievement;
+import com.redhat.demo.common.Kudos;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,21 +20,29 @@ public class AchievementService {
 
     private final static Logger log = LoggerFactory.getLogger(AchievementService.class);
 
+    @RestClient
+    KudosService kudosService;
+
     @Inject
     AchievementRepository achievementRepository;
 
     public List<Achievement> listAchievements(String user) {
-        return achievementRepository.stream().filter(
+        log.debug("Retrieving the achievements list for user = {}", user);
+        var achList = achievementRepository.stream().filter(
                 achievement -> achievement.getOwner().equalsIgnoreCase(user)
         ).collect(Collectors.toList());
+        log.debug("Achievements for {} retrieved: {}", user, achList);
+        return achList;
     }
 
     @Transactional
     public List<Achievement> refreshAchievements(String user) {
         log.debug("Refreshing achievements for user {}", user);
-        /*List<Kudos> kudosList = kudosService.listKudos(user);
+        var kudosList = kudosService.listKudos(user);
 
-        List<Kudos> ownKudos = kudosList.stream()
+        log.debug("Kudos for {} are: {}", user, kudosList);
+
+        var ownKudos = kudosList.stream()
                 .filter(k -> k.getUserTo().equalsIgnoreCase(user))
                 .collect(Collectors.toList());
 
@@ -57,16 +67,17 @@ public class AchievementService {
             grantAchievement(user, Achievements.SENT_A_KUDOS);
         }
 
-        return listAchievements(user);*/
-        return null;
+        return listAchievements(user);
     }
 
     @Transactional
     public Achievement grantAchievement(String user, String achievementType) {
+        log.debug("Granting achievement for {}: {}", user, achievementType);
+
         Optional<Achievement> achievementOptional = achievementRepository.stream()
-            .filter(achievement -> achievement.getOwner().equalsIgnoreCase(user))
-            .filter(achievement -> achievement.getType().equals(achievementType))
-            .findAny();
+                .filter(achievement -> achievement.getOwner().equalsIgnoreCase(user))
+                .filter(achievement -> achievement.getType().equals(achievementType))
+                .findAny();
 
         if (!achievementOptional.isPresent()) {
             Achievement achievement = Achievement.builder()
@@ -83,18 +94,15 @@ public class AchievementService {
     }
 
     public List<Achievement> listAllAchievements() {
-        return achievementRepository.list();
+        var achList = achievementRepository.list();
+        log.debug("All achievements retrieved: {}", achList);
+        return achList;
     }
 
     @Transactional
     public void deleteAchievement(Long id) {
+        log.debug("Deleting achievements with id={}", id);
         achievementRepository.deleteById(id);
     }
-
-    // TODO listen to new kudos
-    /*public void onEvent(@Observes KudosCreatedEvent kudosCreatedEvent) {
-        refreshAchievements(kudosCreatedEvent.getKudos().getUserTo());
-        refreshAchievements(kudosCreatedEvent.getKudos().getUserFrom());
-    }*/
 
 }
